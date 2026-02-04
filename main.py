@@ -68,13 +68,7 @@ class SentimentResponse(BaseModel):
 
 @app.get("/health")
 async def health_check():
-    try:
-        # lightweight model call to verify model responds
-        response = model.generate_content("Health check: please reply with 'ok'.")
-        text = response.text.strip() if hasattr(response, "text") else str(response)
-        return {"status": "healthy", "response": text}
-    except Exception as e:
-        return {"status": "unhealthy", "response": str(e)}
+    return {"status": "healthy", "timestamp": genai.utils.get_current_utc_iso()}
 
 
 @app.post("/summarize", response_model=SummarizeResponse)
