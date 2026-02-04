@@ -68,7 +68,13 @@ class SentimentResponse(BaseModel):
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "model": MODEL_NAME}
+    try:
+        # lightweight model call to verify model responds
+        response = model.generate_content("Health check: please reply with 'ok'.")
+        text = response.text.strip() if hasattr(response, "text") else str(response)
+        return {"status": "healthy", "response": text}
+    except Exception as e:
+        return {"status": "unhealthy", "response": str(e)}
 
 
 @app.post("/summarize", response_model=SummarizeResponse)
