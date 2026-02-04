@@ -6,6 +6,7 @@ import google.generativeai as genai
 from typing import Literal
 import os
 from dotenv import load_dotenv
+import datetime
 
 load_dotenv()  # loads .env file if it exists
 
@@ -68,7 +69,7 @@ class SentimentResponse(BaseModel):
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "timestamp": genai.utils.get_current_utc_iso()}
+    return {"status": "healthy", "timestamp": datetime.datetime.now()}
 
 
 @app.post("/summarize", response_model=SummarizeResponse)
